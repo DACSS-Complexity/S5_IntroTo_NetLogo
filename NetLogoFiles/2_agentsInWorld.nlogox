@@ -30,7 +30,7 @@
 
 
 
-;;; Neighborhoods
+;;; Neighbor patches
 
 ; to setup
 ;  ca
@@ -65,6 +65,44 @@
 ;    ]
 ;  ]
 ;  stop
+; end
+
+
+;;; Neighbor Turtles
+
+; to setup
+;   ca
+;   ;; 1 main focal agent in the center
+;   crt 1 [ set size 3  ]
+;   ;; A few surrounding agents scattered around
+;   crt 100 [ 
+;     setxy random-xcor random-ycor
+;     set color white 
+;   ]
+;   reset-ticks
+; end
+
+; to go
+;   ;; Only the center turtle queries its surroundings:
+;   ask turtle 0 [
+;     ;; Highlight any other turtle that happens to be on those 8 patches:
+;     ask turtles-on neighbors [ 
+;       set color red
+;       set pcolor white ;; Changes the patch under this turtle
+;       ;ask patch-here [ set pcolor white ]  ;; alternative
+;     ]
+;   ]
+;   stop
+; end
+
+; to go
+;   ask turtle 0 [    
+;     ;; k-NN (Always exactly 8 turtles) ---
+;     ask min-n-of 8 (other turtles) [ distance myself ] [
+;       set color red
+;     ]
+;   ]
+;   stop
 ; end</code>
   <widgets>
     <view x="317" wrappingAllowedX="true" y="33" frameRate="30.0" minPycor="-16" height="340" showTickCounter="true" patchSize="10.2" fontSize="10" wrappingAllowedY="true" width="340" tickCounterLabel="ticks" maxPycor="16" updateMode="0" maxPxcor="16" minPxcor="-16"></view>
