@@ -2,78 +2,117 @@
 <model version="NetLogo 7.0.3" snapToGrid="false">
   <code><![CDATA[;;;; HOW TO DISPLAY INFORMATION
 
-globals[pasosmax angulomax]
-patches-own[alimento]
-turtles-own[energia]
+globals[max_steps max_angle initial_food initial_pop]
+patches-own[food]
+turtles-own[energy]
 
 to setup
   ca
-  set pasosmax 10
-  crt 1000[
+  set initial_pop 200
+  set max_steps 10
+  crt initial_pop[
     setxy random-xcor random-ycor
-    set energia 10
+    set energy 10
   ]
 
   ask n-of (count patches / 5)  patches[
-    set alimento 10
+    set food 10
     set pcolor green]
+  
+  set initial_food (10 * count patches with [pcolor = green])
+  
   reset-ticks
+  
+  
 end
-
 
 
 to go
-  while[count turtles > 0][
-  ask turtles
-  [
-    ifelse alimento > 0[
-      set energia energia + 1
-      set alimento alimento - 1  ;;; CREATE a MONITOR: sum [alimento] of patches
-    ][
-      set energia energia - 1
+  ;; Halting condition for the forever button:
+  if not any? turtles [ stop ]
+
+  ask turtles [
+    ifelse food > 0 [
+      set energy energy + 1
+      set food food - 1
+    ] [
+      set energy energy - 1
     ]
-    ifelse energia > 0 [
-      let pasos random pasosmax ;temporal
+    ifelse energy > 0 [
+      let steps random max_steps ;temporal
       set heading random 360
-      fd pasos
-    ][
+      fd steps
+    ] [
       die
     ]
-  ] ask patches with [pcolor = green and alimento <= 0][
-      set pcolor red
-    ]
+  ] 
 
-    tick
-;    output-print count (patches with [pcolor = green]) ;;; create OUTPUT BOX
-
+  ask patches with [ pcolor = green and food <= 0 ] [
+    set pcolor red
   ]
 
-  stop
+  output-print count (patches with [pcolor = green])
+
+  tick
+  wait 0.5
 end
+
+
 
 ;;;;;;PLOTS
 
-;bars and lines
-; line
-;plot sum [alimento] of patches / count patches with [pcolor = green]
-; bar
-;plot count turtles / count patches
+;bars and lines : remaining food and turtles
+; line : food_remaining%
+;plot (100 * sum [food] of patches) / initial_food
+; bar : turtles_alive%
+;plot (100 * count turtles) / initial_pop
 
-;histogram 1
-;histogram [alimento] of patches with [pcolor = green]
 
-;histogram 2
-;histogram [alimento] of patches with [pcolor = green]
-;set-plot-y-range 0 5
-;set-plot-x-range 0 max ([alimento] of patches with [pcolor = green]) + 1
+;histogram: food distribution
+;histogram [food] of patches with [pcolor = green]
+; set-plot-y-range 0 11
+; set-plot-x-range 0 11
+
 
 ;scatterplot
-;
-;plotxy (sum [alimento] of patches)  (count patches with [pcolor = green])]]></code>
+
+;plotxy (sum [food] of patches)  (count patches with [pcolor = green])]]></code>
   <widgets>
-    <view x="129" wrappingAllowedX="true" y="36" frameRate="30.0" minPycor="-16" height="340" showTickCounter="true" patchSize="10.2" fontSize="10" wrappingAllowedY="true" width="340" tickCounterLabel="ticks" maxPycor="16" updateMode="0" maxPxcor="16" minPxcor="-16"></view>
+    <view x="144" wrappingAllowedX="true" y="17" frameRate="30.0" minPycor="-16" height="453" showTickCounter="true" patchSize="13.61" fontSize="10" wrappingAllowedY="true" width="453" tickCounterLabel="ticks" maxPycor="16" updateMode="0" maxPxcor="16" minPxcor="-16"></view>
     <button x="36" y="70" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="66">setup</button>
     <button x="37" y="134" height="40" disableUntilTicks="false" forever="true" kind="Observer" width="63">go</button>
+    <plot x="1103" autoPlotX="true" yMax="10.0" autoPlotY="true" y="7" xMin="0.0" height="320" legend="false" xMax="10.0" yMin="0.0" width="528" display="histogram of food">
+      <setup></setup>
+      <update>set-plot-x-range 0 11
+set-plot-y-range 0 11
+</update>
+      <pen interval="1.0" mode="1" display="food" color="-8053223" legend="true">
+        <setup></setup>
+        <update>histogram [food] of patches with [pcolor = green]</update>
+      </pen>
+    </plot>
+    <plot x="613" autoPlotX="true" yMax="10.0" autoPlotY="true" y="8" xMin="0.0" height="322" legend="true" xMax="10.0" yMin="0.0" width="473" display="remaining food and turtles">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="0" display="food_remaining%" color="-7858858" legend="true">
+        <setup></setup>
+        <update>plot (100 * sum [food] of patches) / initial_food</update>
+      </pen>
+      <pen interval="1.0" mode="1" display="turtles_alive%" color="-16777216" legend="true">
+        <setup></setup>
+        <update>plot (100 * count turtles) / initial_pop</update>
+      </pen>
+    </plot>
+    <output x="15" y="266" height="61" fontSize="12" width="117"></output>
+    <monitor x="16" precision="1" y="191" height="60" fontSize="11" width="100" display="food">sum [food] of patches</monitor>
+    <plot x="615" autoPlotX="true" yMax="10.0" autoPlotY="true" yAxis="remaining population" y="339" xMin="0.0" height="400" legend="false" xMax="10.0" yMin="0.0" width="599" xAxis="remaining food" display="scatter">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="2" display="default" color="-16777216" legend="true">
+        <setup></setup>
+        <update>plotxy (100 * sum [food] of patches / initial_food)  (100 * count turtles / initial_pop)</update>
+      </pen>
+    </plot>
   </widgets>
   <info>## WHAT IS IT?
 

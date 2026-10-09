@@ -3,9 +3,9 @@
   <code>;;; Sliders
 
 
-to setup ;;; keep this setup for the next 'to go'
+to setup 
   ca
-  crt 2 [   ;create variable 'Poblacion' for 'slider'
+  crt Population [   ; this is your slider
     set shape "person"
     setxy random-xcor random-ycor
   ]
@@ -16,25 +16,25 @@ to setup ;;; keep this setup for the next 'to go'
 end
 
 
-to go
-  ask turtles[
-    ask patches in-radius 5[
-      set pcolor [color] of myself - 2
-    ]
-    ask patches in-radius 4[
-      set pcolor white
-    ]
-  ]
-  stop
-end
+; to go
+;   ask turtles[
+;     ask patches in-radius 5[
+;       set pcolor [color] of myself
+;     ]
+;     ask patches in-radius 4[
+;       set pcolor white
+;     ]
+;   ]
+;   stop
+; end
 
 ;;; CHOOSER
 
 ; to go
 ;  ask turtles[
-;    let myRadius 3 + random the_radius  ;;;'the_radius" will be a chooser
+;    let myRadius 3 + random the_radius      ;;;'the_radius" will be a chooser
 ;    ask patches in-radius myRadius [
-;      set pcolor [color] of myself - 2
+;      set pcolor [color] of myself
 ;    ]
 ;    ask patches in-radius (myRadius - 1)[
 ;      set pcolor white
@@ -45,24 +45,23 @@ end
 
 ;;; SWITCHES
 
-;to go
-;
+; to go
 ;  ask turtles[
 ;    let myRadius 3 + random the_radius
 ;    ask patches in-radius myRadius [
-;      set pcolor [color] of myself - 2
+;      set pcolor [color] of myself
 ;    ]
-;    if solo_borde? [  ;;;;this 'solo_borde?' will be SWITCH
+;    if just_border? [                      ;'just_border?' will be SWITCH
 ;    ask patches in-radius (myRadius - 1)[
 ;      set pcolor white
 ;    ]]
 ;  ]
 ;  stop
-;end</code>
+; end</code>
   <widgets>
     <view x="196" wrappingAllowedX="true" y="75" frameRate="30.0" minPycor="-20" height="289" showTickCounter="true" patchSize="6.95122" fontSize="10" wrappingAllowedY="true" width="289" tickCounterLabel="ticks" maxPycor="20" updateMode="0" maxPxcor="20" minPxcor="-20"></view>
-    <button x="197" y="30" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="138">setup</button>
-    <button x="351" y="30" height="40" disableUntilTicks="false" forever="true" kind="Observer" width="137">go</button>
+    <slider x="225" step="1" y="374" max="100" width="250" display="Population" height="50" min="0" direction="Horizontal" default="2.0" variable="Population"></slider>
+    <button x="29" y="76" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="145">setup</button>
   </widgets>
   <info>## WHAT IS IT?
 
