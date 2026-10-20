@@ -7,12 +7,13 @@
   wolf-gain-from-food
 ]
 
+; Shared animal state.
+turtles-own [ energy ]
+
 ; Sheep and wolves are breeds of turtles.
 breed [ sheep a-sheep ]
 breed [ wolves wolf ]
 
-; Shared animal state.
-turtles-own [ energy ]
 
 ; Grass state is represented on patches.
 patches-own [
